@@ -1,38 +1,84 @@
+import 'package:currency_converter/core/navigation/api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:currency_converter/core/dio/api_service.dart';
 import 'package:currency_converter/core/shared_preferences/app_prefs.dart';
+import 'package:currency_converter/features/currency_list/data/helper/currency_database_helper.dart';
+import 'package:currency_converter/features/currency_converter/data/datasources/currency_converter_data_source.dart';
+import 'package:currency_converter/features/currency_converter/data/repositories/currency_converter_repository_impl.dart';
+import 'package:currency_converter/features/currency_converter/domain/repositories/currency_converter_repository.dart';
+import 'package:currency_converter/features/currency_converter/domain/use_cases/convert_currency_use_case.dart';
+import 'package:currency_converter/features/currency_list/data/datasources/currency_list_data_source.dart';
+import 'package:currency_converter/features/currency_list/data/repositories/currency_list_repository_impl.dart';
+import 'package:currency_converter/features/currency_list/domain/repositories/currency_list_repository.dart';
+import 'package:currency_converter/features/currency_list/domain/use_cases/get_currencies_use_case.dart';
+import 'package:currency_converter/features/currency_list/domain/use_cases/refresh_currencies_use_case.dart';
+import 'package:currency_converter/features/historical_rates/data/datasources/historical_rates_data_source.dart';
+import 'package:currency_converter/features/historical_rates/data/repositories/historical_rates_repository_impl.dart';
+import 'package:currency_converter/features/historical_rates/domain/repositories/historical_rates_repository.dart';
+import 'package:currency_converter/features/historical_rates/domain/use_cases/get_historical_rates_use_case.dart';
 
-final GetIt getIt = GetIt.instance;
+final getIt = GetIt.instance;
 
-/// Sets up all dependencies for the service locator.
-/// Call this at app startup.
+/// Call this once in `main()`
 Future<void> setupServiceLocator() async {
-  _registerCoreServices();
-  await _registerAsyncServices();
+  await _registerCore();
+  _registerDataSources();
   _registerRepositories();
+  _registerUseCases();
+}
+/* ─────────────────── CORE ─────────────────── */
+Future<void> _registerCore() async {
+  getIt
+    ..registerLazySingleton<Dio>(Dio.new)
+    ..registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()))
+    ..registerLazySingleton<CurrencyDatabaseHelper>(
+      () => CurrencyDatabaseHelper.instance,
+    );
+
+  final prefs = await SharedPreferences.getInstance();
+  getIt
+    ..registerSingleton<SharedPreferences>(prefs)
+    ..registerLazySingleton<AppPreferences>(() => AppPreferences(prefs));
 }
 
-/// Registers core synchronous services.
-void _registerCoreServices() {
-  getIt.registerLazySingleton<Dio>(() => Dio());
-  getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
+/* ───────────────── DATA SOURCES ─────────────── */
+void _registerDataSources() {
+  getIt
+    ..registerLazySingleton<CurrencyConverterDataSource>(
+      () => CurrencyConverterDataSourceImpl(getIt<ApiService>()),
+    )
+    ..registerLazySingleton<CurrencyListDataSource>(
+      () => CurrencyListDataSourceImpl(
+        getIt<ApiService>(),
+        getIt<CurrencyDatabaseHelper>(),
+      ),
+    )
+    ..registerLazySingleton<HistoricalRatesDataSource>(
+      () => HistoricalRatesDataSourceImpl(getIt<ApiService>()),
+    );
 }
 
-/// Registers asynchronous services (e.g., SharedPreferences).
-Future<void> _registerAsyncServices() async {
-  final sharedPrefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(sharedPrefs);
-  getIt.registerLazySingleton<AppPreferences>(
-    () => AppPreferences(getIt<SharedPreferences>()),
-  );
- 
-
-
-}
-
-/// Registers all repositories and their dependencies.
+/* ───────────────── REPOSITORIES ─────────────── */
 void _registerRepositories() {
-  // TODO: Register repositories here when needed
+  getIt
+    ..registerLazySingleton<CurrencyConverterRepository>(
+      () =>
+          CurrencyConverterRepositoryImpl(getIt<CurrencyConverterDataSource>()),
+    )
+    ..registerLazySingleton<CurrencyListRepository>(
+      () => CurrencyListRepositoryImpl(getIt<CurrencyListDataSource>()),
+    )
+    ..registerLazySingleton<HistoricalRatesRepository>(
+      () => HistoricalRatesRepositoryImpl(getIt<HistoricalRatesDataSource>()),
+    );
+}
+/* ───────────────── USE CASES ───────────────── */
+
+void _registerUseCases() {
+  getIt
+    ..registerLazySingleton(() => GetCurrenciesUseCase(getIt()))
+    ..registerLazySingleton(() => RefreshCurrenciesUseCase(getIt()))
+    ..registerLazySingleton(() => ConvertCurrencyUseCase(getIt()))
+    ..registerLazySingleton(() => GetHistoricalRatesUseCase(getIt()));
 }

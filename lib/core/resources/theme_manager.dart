@@ -1,130 +1,103 @@
+import 'package:currency_converter/core/resources/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:currency_converter/core/resources/app_colors.dart';
-import 'package:currency_converter/core/resources/text_styles_manager.dart';
-import 'package:currency_converter/core/resources/values_manager.dart';
 
 class ThemeManager {
   ThemeManager._();
 
-  //static final ThemeData light = _buildLightTheme();
   static ThemeData light(BuildContext context) => _buildLightTheme(context);
 
   static ThemeData _buildLightTheme(BuildContext context) {
     return ThemeData(
-      scaffoldBackgroundColor: AppColors.couponBackColor,
-      canvasColor: AppColors.couponBackColor,
-
+      scaffoldBackgroundColor: AppColors.background,
+      canvasColor: AppColors.background,
       primarySwatch: AppColors.primarySwatch,
       primaryColor: AppColors.primary,
       appBarTheme: _appBarTheme(),
       buttonTheme: _buttonTheme(),
-      elevatedButtonTheme: _elevatedButtonTheme(context),
-      textTheme: _textTheme(context),
-      inputDecorationTheme: _inputDecorationTheme(context),
-      //
+      elevatedButtonTheme: _elevatedButtonTheme(),
+      textTheme: _textTheme(),
+      inputDecorationTheme: _inputDecorationTheme(),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: AppColors.primary,        // لون الكيرسر
-        selectionColor: AppColors.selectionColor, // لون التحديد (Highlight)
-        selectionHandleColor: AppColors.primary, // لون الدائرة اللي بتسحبها
+        cursorColor: AppColors.primary,
+        selectionColor: AppColors.iconColor,
+        selectionHandleColor: AppColors.primary,
       ),
     );
   }
 
   static AppBarTheme _appBarTheme() {
     return AppBarTheme(
-      elevation: AppSize.zero,
-      surfaceTintColor: AppColors.couponBackColor,
-      backgroundColor: AppColors.couponBackColor,
+      backgroundColor: AppColors.background,
+      surfaceTintColor: AppColors.background,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.couponBackColor,
-        // statusBarIconBrightness: Brightness.dark,
-        // statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark, // Android
-        statusBarBrightness: Brightness.dark, // iOS
-        //
-        systemNavigationBarColor: AppColors.white,
+        statusBarColor: AppColors.background,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor:AppColors.background,
         systemNavigationBarIconBrightness: Brightness.dark,
-        systemNavigationBarDividerColor: AppColors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
       ),
+      elevation: 0,
     );
   }
 
   static ButtonThemeData _buttonTheme() {
     return ButtonThemeData(
       shape: const StadiumBorder(),
-      disabledColor: AppColors.disabled,
+      disabledColor: AppColors.iconColor,
       buttonColor: AppColors.primary,
-      splashColor: AppColors.splash,
+      splashColor: AppColors.iconColor,
     );
   }
 
-  static ElevatedButtonThemeData _elevatedButtonTheme(BuildContext context) {
+  static ElevatedButtonThemeData _elevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        textStyle: TextStylesManager.light(
-          color: AppColors.primary,
-          fontSize: 22,
-          context: context,
-        ),
+        textStyle: AppTextStyles.highlightWhiteMed,
         backgroundColor: AppColors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(vertical: 10),
-        disabledBackgroundColor: AppColors.disabled,
+        disabledBackgroundColor: AppColors.mainTextColor,
       ),
     );
   }
 
-  static TextTheme _textTheme(BuildContext context) {
+  static TextTheme _textTheme() {
     return TextTheme(
-      headlineLarge: TextStylesManager.bold(color: AppColors.white, fontSize: 30, context: context),
-      headlineSmall: TextStylesManager.bold(color: AppColors.white, fontSize: 16, context: context),
-      displaySmall: TextStylesManager.medium(color: AppColors.white, fontSize: 16, context: context),
-      labelMedium: TextStylesManager.medium(color: AppColors.white, fontSize: 18, context: context),
-      displayLarge: TextStylesManager.regular(color: AppColors.black, fontSize: 30, context: context),
-      bodyMedium: TextStylesManager.regular(
-        color: AppColors.grey,
-        fontSize: 16,
-        context: context,
-      ),
-      titleMedium: TextStylesManager.regular(color: AppColors.black, fontSize: 16, context: context),
-      labelSmall: TextStylesManager.regular(
-        color: AppColors.primary,
-        fontSize: 12,
-        context: context,
-      ),
-      labelLarge: TextStylesManager.bold(
-        color: AppColors.primary,
-        fontSize: 24,
-        context: context,
-      ),
-      displayMedium: TextStylesManager.medium(color: AppColors.black, fontSize: 18, context: context),
-      titleSmall: TextStylesManager.medium(color: AppColors.black, fontSize: 16, context: context),
+      headlineLarge: AppTextStyles.displayBlackBold,
+      headlineMedium: AppTextStyles.highlightBlackBold,
+      headlineSmall: AppTextStyles.headingMain,
+      bodyLarge: AppTextStyles.bodyMedBlueGrey,
+      bodyMedium: AppTextStyles.bodyBoldBlueGrey,
+      bodySmall: AppTextStyles.bodyMedBlueGrey,
+      labelLarge: AppTextStyles.captionBlueGreyReg,
+      labelMedium: AppTextStyles.captionBlueGreyMed,
+      labelSmall: AppTextStyles.captionBlueGreyMed,
     );
   }
 
-  static InputDecorationTheme _inputDecorationTheme(BuildContext context) {
+  static InputDecorationTheme _inputDecorationTheme() {
     return InputDecorationTheme(
-      prefixIconColor: AppColors.cancel,
+      prefixIconColor: AppColors.iconColor,
       contentPadding: const EdgeInsets.all(8),
-      hintStyle: TextStylesManager.regular(color: AppColors.grey, fontSize: 14, context: context),
-      labelStyle: TextStylesManager.medium(color: AppColors.grey, fontSize: 14, context: context),
-      errorStyle: TextStylesManager.regular(color: AppColors.reset, fontSize: 14, context: context),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.grey, width: 1),
+      hintStyle:AppTextStyles.subtitleNearBlueGreySemi,
+      labelStyle: AppTextStyles.subtitleNearBlueGreySemi,
+      errorStyle:AppTextStyles.subtitleNearBlueGreySemi,
+      enabledBorder:  OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.iconColor, width: 1),
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      focusedBorder:  OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.primary, width: 1),
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      errorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.reset, width: 1),
+      errorBorder:  OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.iconColor, width: 1),
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      focusedErrorBorder:  OutlineInputBorder(
+      focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.primary, width: 1),
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),

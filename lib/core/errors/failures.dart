@@ -11,10 +11,11 @@ class ServerFailure extends Failure {
   const ServerFailure(super.message);
 
   static const Map<DioExceptionType, String> _dioErrorMessages = {
-    DioExceptionType.connectionTimeout: 'Connection timeout with API server.',
-    DioExceptionType.sendTimeout: 'Send timeout with API server.',
-    DioExceptionType.receiveTimeout: 'Receive timeout with API server.',
-    DioExceptionType.cancel: 'Request to API server was canceled.',
+    DioExceptionType.connectionTimeout: 'Connection timeout. Please check your internet.',
+    DioExceptionType.sendTimeout: 'Send timeout. Please check your internet.',
+    DioExceptionType.receiveTimeout: 'Receive timeout. Please check your internet.',
+    DioExceptionType.cancel: 'Request was canceled.',
+    DioExceptionType.connectionError: 'No internet connection. Please check your network.',
   };
 
   static const Map<int, String> _statusErrorMessages = {
@@ -39,11 +40,15 @@ class ServerFailure extends Failure {
       return ServerFailure.fromResponse(statusCode, response?.data);
     }
 
-    // Handle no internet connection
-    if (dioError.type == DioExceptionType.unknown &&
-        dioError.error != null &&
-        dioError.error.toString().contains('SocketException')) {
-      return const ServerFailure('No Internet Connection');
+    // Handle connection errors (SocketException, DNS lookup failures, etc.)
+    if (dioError.type == DioExceptionType.unknown || 
+        dioError.type == DioExceptionType.connectionError) {
+      final errorMessage = dioError.error?.toString() ?? '';
+      if (errorMessage.contains('SocketException') ||
+          errorMessage.contains('Failed host lookup') ||
+          errorMessage.contains('Network is unreachable')) {
+        return const ServerFailure('No internet connection. Please check your network.');
+      }
     }
 
     // Fallback for unexpected errors
