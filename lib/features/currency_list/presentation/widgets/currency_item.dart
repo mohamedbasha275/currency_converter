@@ -16,6 +16,7 @@ class  CurrencyItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(18),
+      splashColor: Colors.transparent,
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),

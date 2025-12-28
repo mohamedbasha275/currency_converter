@@ -10,11 +10,19 @@ class CurrencyListModel extends CurrencyListEntity {
 
   factory CurrencyListModel.fromJson(Map<String, dynamic> json) {
     return CurrencyListModel(
-      code:  json['code'],
+      code: json['code'],
       name: json['name'],
       symbol: json['symbol'],
       flagUrl: json['flagUrl'],
     );
   }
-}
 
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'name': name,
+      'symbol': symbol,
+      'flagUrl': flagUrl,
+    };
+  }
+}

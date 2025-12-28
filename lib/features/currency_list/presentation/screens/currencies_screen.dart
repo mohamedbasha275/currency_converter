@@ -1,3 +1,5 @@
+import 'package:currency_converter/app_widgets/empty_widget.dart';
+import 'package:currency_converter/app_widgets/error_widget.dart';
 import 'package:currency_converter/core/extension/extensions.dart';
 import 'package:currency_converter/core/resources/app_colors.dart';
 import 'package:currency_converter/core/resources/app_text_styles.dart';
@@ -147,55 +149,11 @@ class CurrenciesScreen extends HookWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               if (state is CurrencyListError) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.wifi_off_rounded,
-                          size: 80,
-                          color: AppColors.nearBlueGrey.withValues(alpha: 0.3),
-                        ),
-                        20.heightBox,
-                        AppText(
-                          'Connection Error',
-                          style: AppTextStyles.highlightBlackSemi,
-                        ),
-                        12.heightBox,
-                        AppText(
-                          state.message,
-                          style: AppTextStyles.bodyMedBlueGrey,
-                          align: TextAlign.center,
-                        ),
-                        24.heightBox,
-                        ElevatedButton.icon(
-                          onPressed: () => context
-                              .read<CurrencyListCubit>()
-                              .getCurrencies(),
-                          icon: Icon(Icons.refresh, color: AppColors.iconColor),
-                          label: AppText(
-                            'Try Again',
-                            style: AppTextStyles.bodyMedBlueGrey.copyWith(
-                              color: AppColors.iconColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return AppErrorWidget(
+                  message: state.message,
+                  function: () => context
+                      .read<CurrencyListCubit>()
+                      .getCurrencies(),
                 );
               }
               if (state is! CurrencyListLoaded) {
@@ -212,44 +170,8 @@ class CurrenciesScreen extends HookWidget {
                         return CurrencyItem(currency: c, onTap: () {});
                       },
                     )
-                  : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.search_off_rounded,
-                            size: 80,
-                            color: AppColors.nearBlueGrey.withValues(alpha: 0.3),
-                          ),
-                          16.heightBox,
-                          AppText(
-                            'No currencies found',
-                            style: AppTextStyles.highlightBlackSemi,
-                          ),
-                          8.heightBox,
-                          AppText(
-                            'Try searching with different keywords',
-                            style: AppTextStyles.bodyMedBlueGrey,
-                          ),
-                          if (searchController.text.isNotEmpty) ...[
-                            20.heightBox,
-                            TextButton.icon(
-                              onPressed: () {
-                                searchController.clear();
-                                context.read<CurrencyListCubit>().clearSearch();
-                              },
-                              icon: Icon(Icons.clear, color: AppColors.primary),
-                              label: AppText(
-                                'Clear Search',
-                                style: AppTextStyles.bodyMedBlueGrey.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
+                  : AppEmptyWidget(
+                      message: 'No currencies found for your search.',
                     );
             },
           ),

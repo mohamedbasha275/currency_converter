@@ -21,7 +21,7 @@ void main() {
     flagUrl: 'https://flagcdn.com/us.png',
   );
 
-  final egyPurrency = CurrencyListEntity(
+  final egyCurrency = CurrencyListEntity(
     code: 'EGY',
     name: 'Egyptian Pound',
     symbol: 'E£',
@@ -44,19 +44,17 @@ void main() {
   });
 
   group('Initial State', () {
-    // يجب أن يبدأ بـ CurrencyConverterInitial
     test('should start with Initial state', () {
       expect(cubit.state, isA<CurrencyConverterInitial>());
     });
   });
 
   group('convertCurrency', () {
-    // ✅ Happy Path: use case نجح → Loading → Loaded
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should emit Loading then Loaded on success',
       build: () {
         cubit.setFromCurrency(usdCurrency);
-        cubit.setToCurrency(egyPurrency);
+        cubit.setToCurrency(egyCurrency);
         when(() => mockUseCase.call(any()))
             .thenAnswer((_) async => const Right(30.5));
         return cubit;
@@ -68,12 +66,11 @@ void main() {
       ],
     );
 
-    // ❌ Error: use case فشل → Loading → Error
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should emit Loading then Error on failure',
       build: () {
         cubit.setFromCurrency(usdCurrency);
-        cubit.setToCurrency(egyPurrency);
+        cubit.setToCurrency(egyCurrency);
         when(() => mockUseCase.call(any()))
             .thenAnswer((_) async => const Left(ServerFailure('Network error')));
         return cubit;
@@ -86,12 +83,11 @@ void main() {
       ],
     );
 
-    // يجب أن يحسب converted amount صح
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should calculate converted amount correctly',
       build: () {
         cubit.setFromCurrency(usdCurrency);
-        cubit.setToCurrency(egyPurrency);
+        cubit.setToCurrency(egyCurrency);
         cubit.setAmount(100.0);
         when(() => mockUseCase.call(any()))
             .thenAnswer((_) async => const Right(30.5));
@@ -99,19 +95,18 @@ void main() {
       },
       act: (cubit) => cubit.convertCurrency(),
       verify: (_) {
-        expect(cubit.convertedAmount, 3050.0); // 100 × 30.5
+        expect(cubit.convertedAmount, 3050.0);
       },
     );
   });
 
   group('State Updates', () {
-    // يجب أن يغير العملات
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should update currencies',
       build: () => cubit,
       act: (cubit) {
         cubit.setFromCurrency(usdCurrency);
-        cubit.setToCurrency(egyPurrency);
+        cubit.setToCurrency(egyCurrency);
       },
       expect: () => [
         isA<CurrencyConverterUpdated>(),
@@ -119,7 +114,6 @@ void main() {
       ],
     );
 
-    // يجب أن يغير المبلغ
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should update amount',
       build: () => cubit,
@@ -129,13 +123,12 @@ void main() {
       },
     );
 
-    // يجب أن يبدل العملات
     blocTest<CurrencyConverterCubit, CurrencyConverterState>(
       'should swap currencies',
       build: () => cubit,
       seed: () {
         cubit.fromCurrency = usdCurrency;
-        cubit.toCurrency = egyPurrency;
+        cubit.toCurrency = egyCurrency;
         return CurrencyConverterInitial();
       },
       act: (cubit) => cubit.swapCurrencies(),
@@ -147,7 +140,6 @@ void main() {
   });
 
   group('convertedAmount Getter', () {
-    // يجب أن يحسب: amount × rate
     test('should calculate amount times rate', () {
       cubit.amount = 100.0;
       cubit.exchangeRate = 30.5;
@@ -155,7 +147,6 @@ void main() {
       expect(cubit.convertedAmount, 3050.0);
     });
 
-    // يجب أن يرجع 0 لما rate = null
     test('should return 0 when rate is null', () {
       cubit.amount = 100.0;
       cubit.exchangeRate = null;

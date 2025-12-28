@@ -20,7 +20,6 @@ void main() {
   });
 
   group('GetCurrenciesUseCase', () {
-    // ✅ Happy Path: repository يرجع currencies
     test('should return currencies when repository succeeds', () async {
       // Arrange
       final fakeCurrencies = [
@@ -41,24 +40,16 @@ void main() {
       when(() => mockRepository.getCurrencies())
           .thenAnswer((_) async => Right(fakeCurrencies));
 
-      // Act
       final result = await useCase.call();
 
-      // Assert
       expect(result, Right(fakeCurrencies));
       verify(() => mockRepository.getCurrencies()).called(1);
     });
 
-    // ❌ Error: repository فشل
     test('should pass through error from repository', () async {
-      // Arrange
       when(() => mockRepository.getCurrencies())
           .thenAnswer((_) async => const Left(ServerFailure('Network error')));
-
-      // Act
       final result = await useCase.call();
-
-      // Assert
       expect(result, const Left(ServerFailure('Network error')));
     });
   });

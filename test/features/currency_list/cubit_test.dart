@@ -56,14 +56,12 @@ void main() {
   });
 
   group('Initial State', () {
-    // يجب أن يبدأ بـ CurrencyListInitial
     test('should start with Initial state', () {
       expect(cubit.state, isA<CurrencyListInitial>());
     });
   });
 
   group('getCurrencies', () {
-    // ✅ Happy Path: use case نجح → Loading → Loaded
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should emit Loading then Loaded on success',
       build: () {
@@ -80,7 +78,6 @@ void main() {
       ],
     );
 
-    // ❌ Error: use case فشل → Loading → Error
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should emit Loading then Error on failure',
       build: () {
@@ -98,7 +95,6 @@ void main() {
   });
 
   group('searchCurrencies', () {
-    // يجب أن يفلتر العملات حسب الـ query
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should filter currencies by search query',
       build: () {
@@ -108,8 +104,8 @@ void main() {
       },
       seed: () => CurrencyListInitial(),
       act: (cubit) async {
-        await cubit.getCurrencies(); // نجيب العملات أولاً
-        cubit.searchCurrencies('USD'); // نبحث عن USD
+        await cubit.getCurrencies();
+        cubit.searchCurrencies('USD');
       },
       expect: () => [
         isA<CurrencyListLoading>(),
@@ -120,7 +116,6 @@ void main() {
       ],
     );
 
-    // يجب أن يرجع كل العملات لو query فاضي
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should return all currencies when query is empty',
       build: () {
@@ -132,17 +127,16 @@ void main() {
       act: (cubit) async {
         await cubit.getCurrencies();
         cubit.searchCurrencies('USD');
-        cubit.searchCurrencies(''); // query فاضي
+        cubit.searchCurrencies('');
       },
       verify: (_) {
         final state = cubit.state as CurrencyListLoaded;
-        expect(state.filteredCurrencies.length, 3); // كل العملات
+        expect(state.filteredCurrencies.length, 3);
       },
     );
   });
 
   group('refreshCurrencies', () {
-    // ✅ Happy Path: refresh نجح
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should emit Loading then Loaded on refresh success',
       build: () {
@@ -157,7 +151,6 @@ void main() {
       ],
     );
 
-    // ❌ Error: refresh فشل
     blocTest<CurrencyListCubit, CurrencyListState>(
       'should emit Loading then Error on refresh failure',
       build: () {

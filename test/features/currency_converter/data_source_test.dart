@@ -16,38 +16,32 @@ void main() {
     dataSource = CurrencyConverterDataSourceImpl(mockApiService);
   });
 
+  // when API succeeds
   group('convertCurrency', () {
-    // ✅ Happy Path: يرجع rate صحيح
-    // مثال: API رجع {"result": {"EGY": 30.5}} → يرجع 30.5
     test('should return rate when API succeeds', () async {
-      // Arrange
       final fakeResponse = {
-        'result': {'EGY': 30.5}
+        'result': {'EGY': 30.5},
       };
-      when(() => mockApiService.get(
-            endpoint: Endpoint.convertCurrency,
-            parameter: '&from=USD&to=EGY',
-          )).thenAnswer((_) async => fakeResponse);
-
-      // Act
+      when(
+        () => mockApiService.get(
+          endpoint: Endpoint.convertCurrency,
+          parameter: '&from=USD&to=EGY',
+        ),
+      ).thenAnswer((_) async => fakeResponse);
       final result = await dataSource.convertCurrency('USD', 'EGY');
-
-      // Assert
       expect(result, 30.5);
     });
-
-    // ❌ Error: لما rate يكون null
+    //  when rate is null
     test('should throw exception when rate is null', () async {
-      // Arrange
       final fakeResponse = {
-        'result': {'EGY': null}
+        'result': {'EGY': null},
       };
-      when(() => mockApiService.get(
-            endpoint: Endpoint.convertCurrency,
-            parameter: '&from=USD&to=EGY',
-          )).thenAnswer((_) async => fakeResponse);
-
-      // Act & Assert
+      when(
+        () => mockApiService.get(
+          endpoint: Endpoint.convertCurrency,
+          parameter: '&from=USD&to=EGY',
+        ),
+      ).thenAnswer((_) async => fakeResponse);
       expect(
         () => dataSource.convertCurrency('USD', 'EGY'),
         throwsA(isA<ServerException>()),

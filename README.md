@@ -2,17 +2,50 @@
 
 A modern Flutter application for currency conversion with real-time exchange rates, historical data visualization, and offline support.
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/mohamedbasha275/currency_converter)
+[![Flutter](https://img.shields.io/badge/Flutter-3.9.2+-02569B?style=flat-square&logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.9.2+-0175C2?style=flat-square&logo=dart)](https://dart.dev)
+
+---
+
+## 📱 Screenshots
+
+![View Screens](assets/screenshots/images.png)
+
+---
+
+## 📥 Download APK
+
+Download the latest release APK directly:
+
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1-4mA9Qw-mIlag2CuW4HCnSiAQ3V3iSyw/view?usp=sharing)
+
+**Direct Link**: [Download APK](https://drive.google.com/file/d/1-4mA9Qw-mIlag2CuW4HCnSiAQ3V3iSyw/view?usp=sharing)
+
+> **Note**: Make sure to enable "Install from Unknown Sources" in your Android settings before installing the APK.
+
+---
+
+## 🔗 Repository
+
+**GitHub**: [https://github.com/mohamedbasha275/currency_converter](https://github.com/mohamedbasha275/currency_converter)
+
 ---
 
 ## 📋 Table of Contents
 
+- [Screenshots](#-screenshots)
+- [Download APK](#-download-apk)
+- [Repository](#-repository)
 - [Build Instructions](#-build-instructions)
 - [Architecture Pattern](#-architecture-pattern)
 - [Image Loader Library](#-image-loader-library)
 - [Database](#-database)
 - [Project Structure](#-project-structure)
 - [Dependencies](#-dependencies)
-- [Future Features](#-future-features)
+- [Future Features](#-future-enhancements-optional--time-permitting)
+- [Testing](#-testing)
+- [Notes](#-notes)
 
 ---
 
@@ -32,7 +65,7 @@ Before building the project, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/mohamedbasha275/currency_converter.git
    cd currency_converter
    ```
 
@@ -467,15 +500,46 @@ Thanks to the use of Clean Architecture and BLoC, these features can be added in
 
 ---
 
+## 🧪 Testing
+
+The project includes comprehensive unit tests covering all layers of the application. For detailed testing documentation, see:
+
+📖 **[Test Documentation](./test/README.md)**
+
+### Quick Test Commands
+
+```bash
+# Run all tests
+flutter test
+
+# Run tests with coverage
+flutter test --coverage
+
+# Run tests for a specific feature
+flutter test test/features/currency_converter/
+```
+
+### Test Coverage
+
+- ✅ **Data Sources**: API calls, error handling, data transformation
+- ✅ **Repositories**: Error mapping, data flow, exception handling
+- ✅ **Use Cases**: Business logic, parameter validation, error propagation
+- ✅ **Cubits**: State management, user interactions, state transitions
+
+---
+
 ## 👨‍💻 Development
 
 For development guidelines and contribution instructions, please refer to the project's development documentation.
 
 ---
-## 📱 Screenshots
 
-![View Screens](assets/screenshots/images.png)
+## 📄 License
+
+This project is open source and available for educational purposes.
 
 ---
 
 **Built with ❤️ using Flutter**
+
+**Repository**: [https://github.com/mohamedbasha275/currency_converter](https://github.com/mohamedbasha275/currency_converter)

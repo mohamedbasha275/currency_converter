@@ -50,20 +50,16 @@ class CurrencyDatabaseHelper {
     final db = await database;
     final batch = db.batch();
     final timestamp = DateTime.now().toIso8601String();
-
     for (var currency in currencies) {
+      final map = currency.toJson();
+      map['createdAt'] = timestamp;
       batch.insert(
         'currencies',
-        {
-          'code': currency.code,
-          'name': currency.name,
-          'symbol': currency.symbol,
-          'flagUrl': currency.flagUrl,
-          'createdAt': timestamp,
-        },
+        map,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
+
 
     await batch.commit(noResult: true);
   }

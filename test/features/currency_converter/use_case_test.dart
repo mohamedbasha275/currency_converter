@@ -5,8 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockCurrencyConverterRepository extends Mock
-    implements CurrencyConverterRepository {}
+class MockCurrencyConverterRepository extends Mock implements CurrencyConverterRepository {}
 
 void main() {
   late ConvertCurrencyUseCase useCase;
@@ -18,43 +17,26 @@ void main() {
   });
 
   group('ConvertCurrencyUseCase', () {
-    // ✅ Happy Path: parameters صحيحة → Right(rate)
+    // test for valid parameters
     test('should return Right when parameters are valid', () async {
-      // Arrange
       const params = ConvertCurrencyParams(from: 'USD', to: 'EGY');
       when(() => mockRepository.convertCurrency('USD', 'EGY'))
           .thenAnswer((_) async => const Right(30.5));
-
-      // Act
       final result = await useCase.call(params);
-
-      // Assert
       expect(result, const Right(30.5));
     });
-
-    // 🛡️ Validation: from فاضي → Error
+    // test for empty from parameter
     test('should return error when from is empty', () async {
-      // Arrange
       const params = ConvertCurrencyParams(from: '', to: 'EGY');
-
-      // Act
       final result = await useCase.call(params);
-
-      // Assert
       expect(result, const Left(ServerFailure('Invalid parameters')));
     });
-
-    // ❌ Error: repository فشل → يمرر الـ error
+    // test for empty to parameter
     test('should pass through error from repository', () async {
-      // Arrange
       const params = ConvertCurrencyParams(from: 'USD', to: 'EGY');
       when(() => mockRepository.convertCurrency('USD', 'EGY'))
           .thenAnswer((_) async => const Left(ServerFailure('Network error')));
-
-      // Act
       final result = await useCase.call(params);
-
-      // Assert
       expect(result, const Left(ServerFailure('Network error')));
     });
   });

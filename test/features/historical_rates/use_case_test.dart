@@ -19,7 +19,6 @@ void main() {
   });
 
   group('GetHistoricalRatesUseCase', () {
-    // ✅ Happy Path: repository يرجع rates
     test('should return rates when repository succeeds', () async {
       // Arrange
       final fakeRates = [
@@ -36,36 +35,28 @@ void main() {
       when(() => mockRepository.getHistoricalRates('USD', 'EGY'))
           .thenAnswer((_) async => Right(fakeRates));
 
-      // Act
       final params = GetHistoricalRatesParams(from: 'USD', to: 'EGY');
       final result = await useCase.call(params);
 
-      // Assert
       expect(result, Right(fakeRates));
       verify(() => mockRepository.getHistoricalRates('USD', 'EGY')).called(1);
     });
 
-    // 🛡️ Validation: params = null → Error
     test('should return error when params is null', () async {
-      // Act
+
       final result = await useCase.call(null);
 
-      // Assert
       expect(result, const Left(ServerFailure('Invalid parameters')));
       verifyNever(() => mockRepository.getHistoricalRates(any(), any()));
     });
 
-    // ❌ Error: repository فشل
     test('should pass through error from repository', () async {
-      // Arrange
       when(() => mockRepository.getHistoricalRates('USD', 'EGY'))
           .thenAnswer((_) async => const Left(ServerFailure('Network error')));
 
-      // Act
       final params = GetHistoricalRatesParams(from: 'USD', to: 'EGY');
       final result = await useCase.call(params);
 
-      // Assert
       expect(result, const Left(ServerFailure('Network error')));
     });
   });

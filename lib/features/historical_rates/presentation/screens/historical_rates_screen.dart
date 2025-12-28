@@ -1,3 +1,4 @@
+import 'package:currency_converter/app_widgets/error_widget.dart';
 import 'package:currency_converter/features/historical_rates/presentation/manager/historical_rates_cubit.dart';
 import 'package:currency_converter/features/historical_rates/presentation/widgets/states/empty_state.dart';
 import 'package:currency_converter/features/historical_rates/presentation/widgets/states/error_state.dart';
@@ -25,9 +26,9 @@ class HistoricalRatesScreen extends StatelessWidget {
             from: from,
             to: to,
           ),
-          HistoricalRatesError() => ErrorState(
+          HistoricalRatesError() => AppErrorWidget(
             message: state.message,
-            onRetry: cubit.getHistoricalRates,
+            function: cubit.getHistoricalRates,
           ),
           HistoricalRatesIdle() => IdleState(
             from: from,

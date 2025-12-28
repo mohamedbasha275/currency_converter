@@ -17,7 +17,7 @@ class ConvertCurrencyUseCase extends UseCase<double, ConvertCurrencyParams> {
 
   @override
   Future<Either<Failure, double>> call([ConvertCurrencyParams? params]) async {
-    if (params!.from.isEmpty || params.to.isEmpty) {
+    if (params!.from.isEmpty ||params!.to.isEmpty ) {
       return const Left(ServerFailure('Invalid parameters'));
     }
 

@@ -2,7 +2,6 @@ import 'package:currency_converter/core/errors/exceptions.dart';
 import 'package:currency_converter/core/navigation/api_service.dart';
 import 'package:currency_converter/core/navigation/end_points.dart';
 import 'package:currency_converter/features/historical_rates/data/datasources/historical_rates_data_source.dart';
-import 'package:currency_converter/features/historical_rates/data/models/historical_rate_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -18,7 +17,6 @@ void main() {
   });
 
   group('getHistoricalRates', () {
-    // ✅ Happy Path: API يرجع rates صحيحة
     test('should return rates when API succeeds', () async {
       // Arrange
       final fakeResponse = {
@@ -35,10 +33,9 @@ void main() {
             parameter: any(named: 'parameter'),
           )).thenAnswer((_) async => fakeResponse);
 
-      // Act
+
       final result = await dataSource.getHistoricalRates('USD', 'EGY');
 
-      // Assert
       expect(result.length, 2);
       expect(result.first.rate, 30.5);
       verify(() => mockApiService.get(
@@ -47,26 +44,20 @@ void main() {
           )).called(1);
     });
 
-    // ❌ Error: results فاضية
     test('should throw exception when results are empty', () async {
-      // Arrange
       final fakeResponse = <String, dynamic>{};
-
       when(() => mockApiService.get(
             endpoint: Endpoint.getCurrenciesHistory,
             parameter: any(named: 'parameter'),
           )).thenAnswer((_) async => fakeResponse);
 
-      // Act & Assert
       expect(
         () => dataSource.getHistoricalRates('USD', 'EGY'),
         throwsA(isA<ServerException>()),
       );
     });
 
-    // ❌ Error: rates list فاضية
     test('should throw exception when rates list is empty', () async {
-      // Arrange
       final fakeResponse = {
         'results': <String, dynamic>{}
       };
@@ -76,7 +67,6 @@ void main() {
             parameter: any(named: 'parameter'),
           )).thenAnswer((_) async => fakeResponse);
 
-      // Act & Assert
       expect(
         () => dataSource.getHistoricalRates('USD', 'EGY'),
         throwsA(isA<ServerException>()),
