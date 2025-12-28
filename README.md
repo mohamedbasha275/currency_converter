@@ -474,11 +474,7 @@ For development guidelines and contribution instructions, please refer to the pr
 ---
 ## 📱 Screenshots
 
-![OnBoarding Screen](assets/screenshots/image1.jpeg)
-![Currency List](assets/screenshots/image2.jpeg)
-![Converter](assets/screenshots/image3.jpeg)
-![History Chart](assets/screenshots/image4.jpeg)
-![History Chart2](assets/screenshots/image5.jpeg)
+![View Screens](assets/screenshots/images.png)
 
 ---
 
