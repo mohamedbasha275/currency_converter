@@ -472,5 +472,14 @@ Thanks to the use of Clean Architecture and BLoC, these features can be added in
 For development guidelines and contribution instructions, please refer to the project's development documentation.
 
 ---
+## 📱 Screenshots
+
+![OnBoarding Screen](assets/screenshots/image1.jpeg)
+![Currency List](assets/screenshots/image2.jpeg)
+![Converter](assets/screenshots/image3.jpeg)
+![History Chart](assets/screenshots/image4.jpeg)
+![History Chart2](assets/screenshots/image5.jpeg)
+
+---
 
 **Built with ❤️ using Flutter**
