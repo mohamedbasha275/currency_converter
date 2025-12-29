@@ -20,7 +20,7 @@ Download the latest release APK directly:
 
 [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1-4mA9Qw-mIlag2CuW4HCnSiAQ3V3iSyw/view?usp=sharing)
 
-**Direct Link**: [Download APK](https://drive.google.com/file/d/1-4mA9Qw-mIlag2CuW4HCnSiAQ3V3iSyw/view?usp=sharing)
+**Direct Link**: [Download APK](https://drive.google.com/file/d/1L9eyqFMugjWmuYPYNs6GODTEJZmk1e1d/view?usp=sharing)
 
 > **Note**: Make sure to enable "Install from Unknown Sources" in your Android settings before installing the APK.
 
