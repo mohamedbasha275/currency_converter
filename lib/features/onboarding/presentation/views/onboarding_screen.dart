@@ -1,3 +1,4 @@
+import 'package:currency_converter/core/extension/extensions.dart';
 import 'package:currency_converter/core/navigation/app_routers.dart';
 import 'package:currency_converter/core/navigation/route_navigate.dart';
 import 'package:currency_converter/core/helper_functions/system_bar.dart';
@@ -68,7 +69,7 @@ class OnBoardingScreen extends HookWidget {
 
                 Container(
                   alignment: Alignment.bottomCenter,
-                  margin: const EdgeInsets.only(bottom:  10),
+                  margin: const EdgeInsets.only(bottom:  30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

@@ -20,30 +20,30 @@ void main() {
   group('convertCurrency', () {
     test('should return rate when API succeeds', () async {
       final fakeResponse = {
-        'result': {'EGY': 30.5},
+        'rates': {'EGP': 30.5},
       };
       when(
         () => mockApiService.get(
           endpoint: Endpoint.convertCurrency,
-          parameter: '&from=USD&to=EGY',
+          parameter: '&symbols=EGP&base=USD',
         ),
       ).thenAnswer((_) async => fakeResponse);
-      final result = await dataSource.convertCurrency('USD', 'EGY');
+      final result = await dataSource.convertCurrency('USD', 'EGP');
       expect(result, 30.5);
     });
     //  when rate is null
     test('should throw exception when rate is null', () async {
       final fakeResponse = {
-        'result': {'EGY': null},
+        'rates': {'EGP': null},
       };
       when(
         () => mockApiService.get(
           endpoint: Endpoint.convertCurrency,
-          parameter: '&from=USD&to=EGY',
+          parameter: '&symbols=EGP&base=USD',
         ),
       ).thenAnswer((_) async => fakeResponse);
       expect(
-        () => dataSource.convertCurrency('USD', 'EGY'),
+        () => dataSource.convertCurrency('USD', 'EGP'),
         throwsA(isA<ServerException>()),
       );
     });

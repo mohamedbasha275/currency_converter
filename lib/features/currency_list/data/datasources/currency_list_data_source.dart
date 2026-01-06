@@ -25,7 +25,7 @@ class CurrencyListDataSourceImpl implements CurrencyListDataSource {
     }
 
     final response = await apiService.get(endpoint: Endpoint.getCurrencies);
-    final currenciesMap = response['currencies'] as Map<String, dynamic>;
+    final currenciesMap = response['symbols'] as Map<String, dynamic>;
     final currencies = currenciesMap.entries.map((entry) {
       final code = entry.key;
       final name = entry.value as String;

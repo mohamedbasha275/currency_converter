@@ -1,7 +1,7 @@
 enum Endpoint {
-  convertCurrency('fetch-one'),
-  getCurrencies('currencies'),
-  getCurrenciesHistory('time-series');
+  convertCurrency('latest'),
+  getCurrencies('symbols'),
+  getCurrenciesHistory('timeseries');
   final String path;
   const Endpoint(this.path);
 }

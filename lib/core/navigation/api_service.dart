@@ -6,10 +6,10 @@ import 'package:dio/dio.dart';
 const String flagSite = 'https://flagcdn.com/w80/';
 //==================================//
 const String _acceptHeader = 'application/json';
-const String _apiToken = '1266cd2219-5d77fca2fe-t7x9lt';
+const String _apiToken = 'yTgM3dak5bNFUnLv4H0D5GUV54h4lWHh';
 
 class ApiService {
-  static const String _baseUrl = 'https://api.fastforex.io/';
+  static const String _baseUrl = 'https://api.apilayer.com/exchangerates_data/';
   final Dio _dio;
 
   ApiService(this._dio);
@@ -30,8 +30,7 @@ class ApiService {
     String parameter = '',
   }) async {
     final headers = await _buildHeaders(isToken: isToken);
-    final url =
-        '$_baseUrl${endpoint.value}${'?api_key=$_apiToken'}${parameter.isNotEmpty ? parameter : ''}';
+    final url = '$_baseUrl${endpoint.value}${'?apikey=$_apiToken'}${parameter.isNotEmpty ? parameter : ''}';
     final options = Options(headers: headers);
 
     late Response response;

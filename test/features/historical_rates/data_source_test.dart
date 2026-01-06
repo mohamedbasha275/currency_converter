@@ -20,10 +20,18 @@ void main() {
     test('should return rates when API succeeds', () async {
       // Arrange
       final fakeResponse = {
-        'results': {
-          'USD': {
-            '2024-01-01': 30.5,
-            '2024-01-02': 30.7,
+        "rates": {
+          "2025-12-26": {
+            "EGP": 47.553819
+          },
+          "2025-12-27": {
+            "EGP": 47.553819
+          },
+          "2025-12-28": {
+            "EGP": 47.569776
+          },
+          "2025-12-29": {
+            "EGP": 47.556646
           }
         }
       };
@@ -34,10 +42,10 @@ void main() {
           )).thenAnswer((_) async => fakeResponse);
 
 
-      final result = await dataSource.getHistoricalRates('USD', 'EGY');
+      final result = await dataSource.getHistoricalRates('USD', 'EGP');
 
-      expect(result.length, 2);
-      expect(result.first.rate, 30.5);
+      expect(result.length, 4);
+      expect(result.first.rate, 47.553819);
       verify(() => mockApiService.get(
             endpoint: Endpoint.getCurrenciesHistory,
             parameter: any(named: 'parameter'),
@@ -52,14 +60,14 @@ void main() {
           )).thenAnswer((_) async => fakeResponse);
 
       expect(
-        () => dataSource.getHistoricalRates('USD', 'EGY'),
+        () => dataSource.getHistoricalRates('USD', 'EGP'),
         throwsA(isA<ServerException>()),
       );
     });
 
     test('should throw exception when rates list is empty', () async {
       final fakeResponse = {
-        'results': <String, dynamic>{}
+        'rates': <String, dynamic>{}
       };
 
       when(() => mockApiService.get(
@@ -68,7 +76,7 @@ void main() {
           )).thenAnswer((_) async => fakeResponse);
 
       expect(
-        () => dataSource.getHistoricalRates('USD', 'EGY'),
+        () => dataSource.getHistoricalRates('USD', 'EGP'),
         throwsA(isA<ServerException>()),
       );
     });

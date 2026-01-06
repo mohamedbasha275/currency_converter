@@ -13,17 +13,19 @@ class CurrencyConverterDataSourceImpl implements CurrencyConverterDataSource {
 
   @override
   Future<double> convertCurrency(String from, String to) async {
-    String parameter = '&from=$from&to=$to';
+    String parameter = '&symbols=$to&base=$from';
     final response = await apiService.get(
       endpoint: Endpoint.convertCurrency,
       parameter: parameter,
     );
-    final fromMap = response['result'] as Map<String, dynamic>;
-    final rateValue = fromMap.values.first;
-    final rate = rateValue;
+    final rates = response['rates'] as Map<String, dynamic>?;
+    if (rates == null || rates.isEmpty) {
+      throw const ServerException('Conversion rate not found');
+    }
+    final rate = rates[to];
     if (rate == null) {
       throw const ServerException('Conversion rate not found');
     }
-    return rate.toDouble();
+    return (rate as num).toDouble();
   }
 }

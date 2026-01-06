@@ -28,7 +28,7 @@ void main() {
   group('getCurrencies', () {
     test('should return currencies from API when no cache', () async {
       final fakeResponse = {
-        'currencies': {
+        'symbols': {
           'USD': 'US Dollar',
           'EGY': 'Egyptian Pound',
         }
