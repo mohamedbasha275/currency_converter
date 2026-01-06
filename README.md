@@ -16,6 +16,17 @@ A modern Flutter application for currency conversion with real-time exchange rat
 
 ## 📥 Download APK
 
+### 🟢 Google Play (Recommended)
+
+<a href="https://play.google.com/store/apps/details?id=we.co.app">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+       alt="Get it on Google Play"
+       height="80"/>
+</a>
+
+🔗 https://play.google.com/store/apps/details?id=we.co.app
+
+
 Download the latest release APK directly:
 
 [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1HCOgyaWFIGUbYWPg7KRnsKRiClhL1mhT/view?usp=sharing)
